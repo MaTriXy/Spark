@@ -1,6 +1,6 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'kotlin-android-extensions'
 
 def configuration = rootProject.ext.configuration
 def libraries = rootProject.ext.libraries
@@ -10,58 +10,34 @@ android {
     buildToolsVersion configuration.buildToolsVersion
 
     defaultConfig {
+        applicationId "io.github.tonnyl.sparksample"
+
         minSdkVersion configuration.minSdkVersion
         targetSdkVersion configuration.targetSdkVersion
 
+        versionCode 1
+        versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    lintOptions {
-        abortOnError false
-    }
-
-    kapt {
-        correctErrorTypes = true
-    }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':spark')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:${libraries.supportLibraryVersion}"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
     testImplementation "junit:junit:${libraries.junitVersion}"
 
     androidTestImplementation "com.android.support.test:runner:${libraries.androidTestRunnerRulesVersion}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${libraries.espressoVersion}"
-}
-
-repositories {
-    mavenCentral()
-}
-
-// Disable creating javadocs
-tasks.withType(Javadoc) {
-    enabled = false
-}
-
-// Type these code in a single line to upload the library to jfrog.
-// jcenter configuration for novoda's bintray-release
-// $ ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false
-publish {
-    userOrg = 'tonnyl'
-    groupId = 'io.github.tonnyl'
-    artifactId = 'spark'
-    publishVersion = '0.1.0-alpha'
-    desc = 'An Android library to create gradient animation like Instagram&Spotify'
-    website = 'https://github.com/TonnyL/Spark'
 }
