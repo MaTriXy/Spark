@@ -1,36 +1,26 @@
 package io.github.tonnyl.sparksample
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import io.github.tonnyl.spark.Spark
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mSpark: Spark
+    private lateinit var _spark: Spark
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mSpark = Spark.Builder()
-                .setView(frameLayout)
-                .setDuration(4000)
-                .setAnimList(Spark.ANIM_GREEN_PURPLE)
-                .build()
-
+        _spark = Spark(frameLayout, Spark.ANIM_GREEN_PURPLE, 4000)
+        _spark.startAnimation()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onDestroy() {
+        super.onDestroy()
 
-        mSpark.startAnimation()
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        mSpark.stopAnimation()
+        _spark.stopAnimation()
     }
 
 }
